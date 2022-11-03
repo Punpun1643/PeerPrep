@@ -9,6 +9,7 @@ import CardActions from '@mui/material/CardActions';
 import sapling from '../../images/sapling.png';
 import youngtree from '../../images/youngtree.png'
 import tree from '../../images/tree.png';
+import { CardActionArea } from '@mui/material';
 
 
 export default function DifficultyCard(props) {
@@ -31,8 +32,8 @@ export default function DifficultyCard(props) {
   }
 
   const difficultyImageMap = { "easy" : sapling, "medium" : youngtree, "hard" : tree}
-  const difficultyTextMap = { "easy" : "Beginner-friendly",
-                              "medium" : "Intermediate level", 
+  const difficultyTextMap = { "easy" : "Beginner Friendly",
+                              "medium" : "Intermediate Level", 
                               "hard" : "Advanced Concepts"}
   const difficultyColorMap = { "easy": "#4caf50",
                                "medium": "#ffca28",
@@ -40,8 +41,17 @@ export default function DifficultyCard(props) {
                               }
 
   return (
-    <Card sx={{minWidth: 160, maxWidth: 160, borderTop: '3px solid', borderTopColor: difficultyColorMap[props.difficulty]}}>
-      <Typography variant="h6" color="424242" sx={{textAlign: 'center', paddingTop: '1em', paddingBottom: '1em'}}>
+    <Card sx={{backgroundColor: "#3370FF",
+              '&:hover': {
+                backgroundColor: '#F7CF1C !important', 
+               }, 
+               minWidth: 160,
+               maxWidth: 160, 
+               borderTop: '3px solid', 
+               borderTopColor: difficultyColorMap[props.difficulty]}}
+               style={{ borderRadius: "20px" }}>
+      <CardActionArea onClick={handleFindMatchClick}>
+      <Typography variant="h6" color="#ffffff" sx={{textAlign: 'center', paddingTop: '1em', paddingBottom: '1em'}}>
         {(props.difficulty)[0].toUpperCase() + (props.difficulty.slice(1))} 
       </Typography>
         <CardMedia
@@ -54,16 +64,11 @@ export default function DifficultyCard(props) {
     
         />
         <CardContent sx={{textAlign: "center"}}>
-          <Typography variant="caption" color="text.secondary" sx={{textAlign: 'center'}}>
+          <Typography color="#ffffff" variant="caption" sx={{textAlign: 'center'}}>
             {difficultyTextMap[props.difficulty]}
           </Typography>
-
         </CardContent>
-        <CardActions>
-        <Button size="medium" variant="outlined"  sx={{margin: 'auto', textTransform:'none', color: "#424242", borderColor: "#424242"}}
-          onClick={handleFindMatchClick}>
-          Find Match</Button>
-      </CardActions>
+      </CardActionArea>
     </Card>
   );
 }

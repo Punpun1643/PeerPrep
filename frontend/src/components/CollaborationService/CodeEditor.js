@@ -3,9 +3,9 @@ import * as Y from "yjs";
 import { WebrtcProvider } from "y-webrtc";
 import { CodemirrorBinding } from "y-codemirror";
 import { UnControlled as CodeMirrorEditor } from "react-codemirror2";
-import RandomColor from "randomcolor";
 import "./CodeEditorAddons";
 import "./CodeEditor.css";
+import Cookies from 'js-cookie';
 
 const CodeEditor = (props) => {
 
@@ -15,6 +15,8 @@ const CodeEditor = (props) => {
   
   const [EditorRef, setEditorRef] = useState(null);
   const [code, setCode] = useState("");
+  const [username, setUsername] = useState(Cookies.get('username'));
+
   
   const handleEditorDidMount = (editor) => {
     setEditorRef(editor);
@@ -28,21 +30,27 @@ const CodeEditor = (props) => {
       let provider = null;
       
       try {
-        provider = new WebrtcProvider(roomId, ydoc, { signalling: ['ws://localhost:3000'] });
+        provider = new WebrtcProvider(roomId, ydoc, { signalling: ['wss://localhost:3000'] });
 
         const yText = ydoc.getText("codemirror");
         
         const yUndoManager = new Y.UndoManager(yText);
 
         const awareness = provider.awareness;
+
+        console.log(username);
+
+        awareness.on('change', changes => {
+          // Whenever somebody updates their awareness information,
+          // we log all awareness information from all users.
+          console.log(Array.from(awareness.getStates().values()));
+        })
         
-        // random colour for the user cursor
-        const color = RandomColor(); 
         
         awareness.setLocalStateField("user", {
-          // using roomId now. possibly can change to something better.
-          name: `${roomId}`,
-          color: color,
+          // reflects username on cursor.
+          name: `${username}`,
+          color: '#3370FF'
         });
         
         const getBinding = new CodemirrorBinding(yText, EditorRef, awareness, {
@@ -65,7 +73,7 @@ const CodeEditor = (props) => {
     <div
       style={{
         display: "flex",
-        height: "99vh",
+        height: "91.5vh",
         width: "100%",
         fontSize: "16px",
         overflowY: "auto",

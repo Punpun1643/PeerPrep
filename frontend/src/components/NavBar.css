@@ -1,0 +1,20 @@
+.peerPrepNavbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.logoutButton {
+    border-radius: 20px;
+    outline: 1px solid white;
+    margin: 4px;
+}
+
+.navbarOption {
+    margin: 4px;
+    border-radius: 20px;
+}
+
+.logo {
+    cursor: pointer;
+}

@@ -10,6 +10,8 @@ import DeleteAccountAlert from "./DeleteAccountAlert";
 import Button from '@mui/material/Button';
 import Cookies from 'js-cookie';
 
+import './NavBar.css';
+
 function NavBar() {
     const [anchorEl, setAnchorEl] = useState(null)
     const open = Boolean(anchorEl)
@@ -44,20 +46,36 @@ function NavBar() {
         }
     }
 
+    const handleHome = (e) => {
+        navigate("/home");
+    }
+
+    const handleFindMatch = (e) => {
+        navigate("/selectquestiondifficulty");
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="sticky">
+            <AppBar className="peerPrepNavbar" position="sticky" style={{ backgroundColor: "#3370FF" }}>
                 <Toolbar>
-                    <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}>
-                        PeerPrep
+                    <Typography variant="h6" sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }} style={{ fontWeight: "bold" }}>
+                    
+                        <p className="logo" onClick={handleHome}>PeerPrep</p>
+                     
                     </Typography>
+               
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open User Settings">
+                        {/* <Tooltip title="Open User Settings">
                             <IconButton onClick={handleOpenUserSettings}>
                                 <SettingsIcon />
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip> */}
+                        <Button className="navbarOption" color="inherit" onClick={handleHome}>Home</Button>
 
+                        <Button className="navbarOption" color="inherit" onClick={handleFindMatch}>Find match</Button>
+               
+                        <Button className="navbarOption" color="inherit" onClick={handleOpenUserSettings}>Settings</Button>
+ 
                         <Menu
                             sx={{ mt: '45px' }}
                             id="menu-appbar"
@@ -87,12 +105,11 @@ function NavBar() {
                             </MenuItem>
 
                         </Menu>
-                        <Tooltip title="Logout">
-                            <IconButton onClick={handleLogout}>
+                      
+                            {/* <IconButton onClick={handleLogout}>
                                 <LogoutIcon />
-                            </IconButton>
-                        </Tooltip>
-
+                            </IconButton> */}
+                            <Button className="logoutButton" color="inherit" onClick={handleLogout}>Logout</Button>
                     </Box>
                 </Toolbar>
             </AppBar>
