@@ -1,4 +1,4 @@
-![example event parameter](https://github.com/Punpun1643/PeerPrep/actions/workflows/main.yml/badge.svg?event=push)
+![example event parameter](https://github.com/Punpun1643/PeerPrep/actions/workflows/main.yml/badge.svg)
 
 # CS3219-AY22-23-Project-Skeleton
 
