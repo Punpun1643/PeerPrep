@@ -45,9 +45,9 @@ function AttemptedCard(props) {
                     {difficultyTextMap[props.difficulty]}
                 </Typography>
                 <Box sx={{display: 'flex', justifyContent: 'flex-end'}}>
-                    {props.difficulty === 'easy' &&  <CircularStatic style={{ backgroundColor: "#05CE91"}} progress={props.numberOfAttempted / 60 * 100} />}
-                    {props.difficulty === 'medium' &&  <CircularStatic style={{ backgroundColor: "#F6C15C"}} progress={props.numberOfAttempted / 60 * 100} />}
-                    {props.difficulty === 'hard' &&  <CircularStatic style={{ backgroundColor: "#C7254E"}} progress={props.numberOfAttempted / 60 * 100} />}
+                    {props.difficulty === 'easy' &&  <CircularStatic style={{ backgroundColor: "#05CE91"}} progress={props.numberOfAttempted / 20 * 100} />}
+                    {props.difficulty === 'medium' &&  <CircularStatic style={{ backgroundColor: "#F6C15C"}} progress={props.numberOfAttempted / 20 * 100} />}
+                    {props.difficulty === 'hard' &&  <CircularStatic style={{ backgroundColor: "#C7254E"}} progress={props.numberOfAttempted / 20 * 100} />}
                     {/* <CircularStatic progress={props.numberOfAttempted / 60 * 100} /> */}
                 </Box>
             </CardContent>
