@@ -96,8 +96,7 @@ export default function RoomPage() {
           });
         socket.emit("join-room", roomId);
 
-
-        socket.on("update-question", async (question) => {            
+        socket.on("update-question", async (question) => {
             window.sessionStorage.setItem("question", JSON.stringify(question.question));
             setQuestionTitle(question.question.QuestionTitle);
             setQuestionBody(question.question.QuestionBody);

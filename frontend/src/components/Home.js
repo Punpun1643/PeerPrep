@@ -25,7 +25,7 @@ function Home(props) {
         getEasyAttemptedQuestions();
         getMediumAttemptedQuestions();
         getHardAttemptedQuestions();
-    })
+    }, [])
 
     const handleStartGrind = (e) => {
         navigate("/selectquestiondifficulty");

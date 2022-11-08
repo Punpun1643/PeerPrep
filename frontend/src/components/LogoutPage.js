@@ -10,7 +10,7 @@ function LogoutPage(props) {
 
     useEffect(() => {
         ensureLoggedIn(navigate);
-    })
+    }, [])
 
 
     return (
