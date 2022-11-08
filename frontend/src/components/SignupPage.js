@@ -23,11 +23,14 @@ function SignupPage() {
 
     return (
         <React.Fragment>
+        
             <Stack 
                 direction={{ xs: 'column', sm: 'row' }}
                 className="signupPage">
                 <Grid xs={6} className="taglineDivider">
                     <div className="tagline">
+                      
+                        
                         <div className="taglineWrapper">
                             <div className="peerPrepBrandWrapper">
                                 <img className="peerPrepLogoSignup" src={logo} alt="Logo" />

@@ -12,11 +12,16 @@ import QuestionDisplay from '../QuestionService/QuestionDisplay';
 import ChatDisplay from '../ChatService/ChatDisplay';
 import Split from 'react-split-grid'
 
+// history service
+import Cookies from 'js-cookie';
+import { updateAttemptedQuestions } from '../../Util';
+
 // collaboration service
 import CodeEditor from '../CollaborationService/CodeEditor';
 import './RoomPage.css';
 
 export default function RoomPage() {
+    const [username, setUsername] = useState(Cookies.get('username'));
 
     //styling for modal
     const modal = {
@@ -91,15 +96,18 @@ export default function RoomPage() {
           });
         socket.emit("join-room", roomId);
 
-        socket.on("update-question", (question) => {            
+
+        socket.on("update-question", async (question) => {            
             window.sessionStorage.setItem("question", JSON.stringify(question.question));
             setQuestionTitle(question.question.QuestionTitle);
             setQuestionBody(question.question.QuestionBody);
             setQuestionImage(question.question.QuestionImage);
-            console.log(question.question);
+            await updateAttemptedQuestions(username, question.question.QuestionTitle, question.question.QuestionDifficulty);
         });
 
         return () => {
+            socket.off("connect");
+            socket.off("update-question");
             socket.disconnect();
             window.sessionStorage.clear();
             socket.connect();
