@@ -29,6 +29,10 @@
     width: 100%;
 }
 
-.userInput {
+.userInputUsername {
+    margin-top: 32px;
+}
+
+.userInputPassword {
     margin-top: 32px;
 }

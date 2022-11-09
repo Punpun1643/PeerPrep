@@ -106,6 +106,7 @@ function Signup() {
                         <Link href="/login">Already have an account? Log in here</Link>
                     </Box>
                     <DialogBox 
+                        className="dialogBoxSignup"
                         isDialogOpen={isDialogOpen}
                         closeDialog={closeDialog}
                         dialogTitle={dialogTitle}
