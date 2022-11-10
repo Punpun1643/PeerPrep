@@ -52,7 +52,7 @@ function LoginPage() {
     }
 
     const action = (
-        <Fragment>
+        <Fragment className="errorSnackBar">
             <IconButton
                 size="small"
                 aria-label="close"

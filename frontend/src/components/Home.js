@@ -25,7 +25,7 @@ function Home(props) {
         getEasyAttemptedQuestions();
         getMediumAttemptedQuestions();
         getHardAttemptedQuestions();
-    })
+    }, [])
 
     const handleStartGrind = (e) => {
         navigate("/selectquestiondifficulty");
@@ -87,9 +87,9 @@ function Home(props) {
                 <div className="homepageBottom">
                 <Typography variant={"h5"} color="white" sx={{ textAlign: 'center', marginTop: 3, fontSize: "18px" }}>So far, you have completed:</Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-evenly', marginTop: 5 }}>
-                    <AttemptedCard difficulty={'easy'} numberOfAttempted={30} />
-                    <AttemptedCard difficulty={'medium'} numberOfAttempted={20} />
-                    <AttemptedCard difficulty={'hard'} numberOfAttempted={10} />
+                    <AttemptedCard difficulty={'easy'} numberOfAttempted={easyQuestions.length} />
+                    <AttemptedCard difficulty={'medium'} numberOfAttempted={mediumQuestions.length} />
+                    <AttemptedCard difficulty={'hard'} numberOfAttempted={hardQuestions.length} />
                 </Box>
                 </div>
             </Box>

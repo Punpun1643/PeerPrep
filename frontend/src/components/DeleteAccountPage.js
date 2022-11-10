@@ -8,7 +8,7 @@ function DeleteAccountPage(props) {
 
     useEffect(() => {
         ensureLoggedIn(navigate);
-    })
+    }, [])
 
     return (
         <Box display={"flex"} flexDirection={"column"} padding={"4rem"} margin={"auto"}>

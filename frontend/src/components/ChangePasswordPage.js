@@ -24,7 +24,7 @@ function ChangePasswordPage() {
 
     useEffect(() => {
         ensureLoggedIn(navigate);
-    })
+    }, [])
 
     const handleChangePassword = async () => {
         setIsSuccess(false)

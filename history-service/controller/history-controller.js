@@ -34,6 +34,10 @@ export async function getRecord(req, res) {
         const level = req.query.level;
 
         const resp = await ormGetRecords(username);
+        if (!resp) {
+            return res.status(400).json({ message: 'No records exist for ' + username});
+        }
+        
         if (resp.err) {
             return res.status(400).json({ message: 'Could not retrieve records for ' + username});
         }
@@ -48,6 +52,6 @@ export async function getRecord(req, res) {
 
         return res.status(200).json({ message: `Successfully retrieved ${username}'s records!`, data: filteredResp });
     } catch (err) {
-        return res.status(500).json({ message: 'Database failure when storing record'});
+        return res.status(500).json({ message: 'Database failure when getting record'});
     }
 }

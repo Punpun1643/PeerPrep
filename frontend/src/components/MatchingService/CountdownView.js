@@ -1,18 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SocketContext } from './SocketContext'
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 
 import './CountdownView.css';
 
+// history service
+import Cookies from 'js-cookie';
+import { updateAttemptedQuestions } from '../../Util.js';
+
 function CountdownView(props) {
+    const [username, setUsername] = useState(Cookies.get('username'));
 
     const { getSocket } = useContext(SocketContext);
 
     let socket = getSocket();
-    
+
     const modal = {
         position: 'fixed',
         left: '0',
@@ -36,7 +41,7 @@ function CountdownView(props) {
         backgroundColor: 'RGBA(19,36,57,0.8)',
         color: "#ffffff",
         borderRadius: '25px'
-      };
+    };
 
     const messages = {
         finding: "Finding a match...",
@@ -47,50 +52,61 @@ function CountdownView(props) {
 
 
     //three possible states for matching status: match-finding, match-success, and match-fail
-    const[matchingStatus, setMatchingStatus] = useState('match-finding');
+    const [matchingStatus, setMatchingStatus] = useState('match-finding');
     const [remainingTime, setRemainingTime] = useState();
     const navigate = useNavigate();
 
-    useEffect( () => {
+    useEffect(() => {
         socket.on("connect", () => {
             console.log(socket.connected); // true
-          });
-        
-        socket.on("match-success", (firstClientSocketId, secondClientSocketId, questionData) => {
+        });
+
+        socket.on("match-success", async (firstClientSocketId, secondClientSocketId, questionData) => {
             setMatchingStatus('match-success');
             console.log(firstClientSocketId);
-            navigate('/roompage', {state: { roomId: firstClientSocketId,
-                secondClientSocketId: secondClientSocketId,
-                questionData: questionData }} );
-            }
+            console.log('iguana', questionData.question.QuestionTitle);
+            await updateAttemptedQuestions(username, questionData.question.QuestionTitle, questionData.question.QuestionDifficulty);
+            navigate('/roompage', {
+                state: {
+                    roomId: firstClientSocketId,
+                    secondClientSocketId: secondClientSocketId,
+                    questionData: questionData
+                }
+            });
+        }
         );
+
+        return () => {
+            socket.off("match-success");
+        } 
     }, []);
 
     if (!props.show) {
         return null;
     }
 
-    const insideCircle = ({remainingTime}) => {
+    const insideCircle = ({ remainingTime }) => {
         setRemainingTime(remainingTime);
 
         if (remainingTime === 0) {
             return "Sorry, no match found";
         } else {
-             return `${remainingTime}`;
-    }}
+            return `${remainingTime}`;
+        }
+    }
 
     return (
         <div style={modal}>
             <div style={center} className="countdownContainer">
                 <div className="countdownWrapper">
-                    <CountdownCircleTimer 
+                    <CountdownCircleTimer
                         size={240}
                         isPlaying
                         duration={30}
                         colors={['#004777', '#F7B801', '#A30000', '#A30000']}
                         colorsTime={[30, 20, 10, 0]}
                         strokeWidth={12}
-                        onComplete= {() => {
+                        onComplete={() => {
                             setMatchingStatus('match-fail')
                             socket.emit('no-match-found');
                             console.log('failed');
@@ -98,20 +114,20 @@ function CountdownView(props) {
                     >
                         {insideCircle}
                     </CountdownCircleTimer>
-                </div> 
-                <Typography className="matchStatusText" sx={{margin: '1.2em'}}>
+                </div>
+                <Typography className="matchStatusText" sx={{ margin: '1.2em' }}>
                     {matchingStatus === 'match-fail' && "Try again later!"}
                     {matchingStatus !== 'match-fail' && remainingTime > 20 && messages.finding}
                     {remainingTime <= 20 && matchingStatus !== 'match-fail' && messages.stillFinding}
-                </Typography> 
-                <Button variant="contained" sx={{margin: '0.6em', borderRadius: '25px'}}  style={{ backgroundColor: "#FF3152", color: "white"}}
+                </Typography>
+                <Button variant="contained" sx={{ margin: '0.6em', borderRadius: '25px' }} style={{ backgroundColor: "#FF3152", color: "white" }}
                     onClick={() => {
                         if (matchingStatus === 'match-finding') {
                             socket.emit('match-cancel');
                         }
                         setMatchingStatus('match-finding');
                         props.handleCloseModal();
-                     }}> Cancel </Button>
+                    }}> Cancel </Button>
             </div>
         </div>
     )

@@ -19,7 +19,7 @@ export default function SelectionView() {
 
     useEffect(() => {
       ensureLoggedIn(navigate);
-    })
+    }, [])
 
 
     const handleOpenModal = () => {

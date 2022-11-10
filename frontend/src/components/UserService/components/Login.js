@@ -71,7 +71,7 @@ function Login() {
                     <Typography className="loginHeader" variant={"h3"} marginBottom={"2rem"}>Login</Typography>
                     <div className="inputWrapper">
                         <TextField
-                            className="userInput"
+                            className="userInputUsername"
                             required
                             label="Username"
                             variant="outlined"
@@ -82,7 +82,7 @@ function Login() {
                             autoFocus
                         />
                         <TextField
-                            className="userInput"
+                            className="userInputPassword"
                             required
                             label="Password"
                             variant="outlined"
@@ -96,6 +96,7 @@ function Login() {
                     <div className="button">
                         <Box display={"flex"} flexDirection={"column"}>
                             <Button 
+                                className="loginButton"
                                 style={{backgroundColor: "#3370FF"}}
                                 variant={"contained"} 
                                 onClick={handleLogin}

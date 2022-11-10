@@ -1,5 +1,7 @@
 import pendingMatchController from '../pendingMatchController.js';
+import { URL_QUESTION_SVC } from '../../configs.js';
 import axios from 'axios';
+
 
 const pendingMatchHandler = (io) => {
     io.on('connection', (socket) => {
@@ -18,7 +20,7 @@ const pendingMatchHandler = (io) => {
                 let question; 
 
                 //retrive easy question by sending a GET API to question-service
-                axios.get('http://localhost:8002/api/questions/?level=easy')
+                axios.get(URL_QUESTION_SVC + '/api/questions/?level=easy')
                     .then(response => {
                         question = response.data;
                         // emit succcess event to the matched users
@@ -51,7 +53,7 @@ const pendingMatchHandler = (io) => {
                 let question;
 
                 //retrive medium question by sending a GET API to question-service
-                axios.get('http://localhost:8002/api/questions/?level=medium')
+                axios.get(URL_QUESTION_SVC + '/api/questions/?level=medium')
                     .then(response => {
                         question = response.data;
                         io.to(socket.id).emit('match-success', currentSocketId, socket.id, question);
@@ -76,8 +78,8 @@ const pendingMatchHandler = (io) => {
                 let question;
 
                 //retrive hard question by sending a GET API to question-service
-                axios.get('http://localhost:8002/api/questions/?level=hard')
-                    .then(response => {
+                axios.get(URL_QUESTION_SVC + '/api/questions/?level=hard')
+                        .then(response => {
                         question = response.data;
                         io.to(socket.id).emit('match-success', currentSocketId, socket.id, question);
                         io.to(currentSocketId).emit('match-success', currentSocketId, socket.id, question);
@@ -103,6 +105,52 @@ const pendingMatchHandler = (io) => {
         socket.on('leave-room', async (socketRoomId) => {
             socket.leave(socketRoomId);
         });
+
+        // refresh question 
+        socket.on('refresh-question', async (socketRoomId, questionDifficulty, questionTitle) => {
+            console.log(questionDifficulty);
+            console.log(questionTitle);
+            let question; 
+
+            if (questionDifficulty == 'easy') {
+                axios.get(URL_QUESTION_SVC + '/api/questions/generateNew/?level=easy', {
+                    data: {
+                        currQuestionTitle : questionTitle
+                    }
+                }).then(response => {
+                    question = response.data;
+                    io.to(socketRoomId).emit('update-question', question);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            } else if (questionDifficulty == 'medium') {
+                axios.get(URL_QUESTION_SVC + '/api/questions/generateNew/?level=medium', {
+                    data: {
+                        currQuestionTitle : questionTitle
+                    }
+                }).then(response => {
+                    question = response.data;
+                    io.to(socketRoomId).emit('update-question', question);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            } else {
+                axios.get(URL_QUESTION_SVC + '/api/questions/generateNew/?level=hard', {
+                    data: {
+                        currQuestionTitle : questionTitle
+                    }
+                }).then(response => {
+                    question = response.data;
+                    io.to(socketRoomId).emit('update-question', question);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            }
+           
+        })
     });
 };
 
